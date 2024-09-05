@@ -1,0 +1,25 @@
+### GET request to server
+GET http://localhost:8080
+
+### GET all users
+GET http://localhost:8080/users
+
+### CREATE a user1
+POST http://localhost:8080/users/eple
+Content-Type: application/json
+
+{
+  "username": "eple",
+  "password": "pass1",
+  "email": "eple@gmail.com"
+}
+
+### CREATE a user2
+POST http://localhost:8080/users/ananas
+Content-Type: application/json
+
+{
+  "username": "ananas",
+  "password": "pass2",
+  "email": "ananas@gmail.com"
+}

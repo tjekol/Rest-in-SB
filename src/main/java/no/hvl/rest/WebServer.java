@@ -1,4 +1,4 @@
-package no.hvl.expass1;
+package no.hvl.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class Expass1Application {
+public class WebServer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Expass1Application.class, args);
-	}
-	@GetMapping("/")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Hello %s!", name);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WebServer.class, args);
+    }
+
+    @GetMapping("/")
+    public String welcome() {
+        return String.format("Welcome to my Poll App!");
+    }
 
 }
