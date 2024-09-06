@@ -23,3 +23,30 @@ Content-Type: application/json
   "password": "pass2",
   "email": "ananas@gmail.com"
 }
+
+### GET all polls
+GET http://localhost:8080/polls
+
+### CREATE user1 creates a poll with vote options.
+POST http://localhost:8080/polls
+Content-Type: application/json
+
+{
+  "username": "eple",
+  "question": "Cat or Dog?",
+  "validUntil": "2024-12-05T12:34:56.789Z",
+  "isPublic": true,
+  "voteOptions": [
+    {
+      "caption": "Cat",
+      "presentationOrder": 0
+    },
+    {
+      "caption": "Dog",
+      "presentationOrder": 1
+    }
+  ]
+}
+
+### GET specific poll by ID
+GET http://localhost:8080/polls/5bdcb0cf-ac9c-480d-880b-223211b14ac3

@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/users/{username}")
-    public ResponseEntity<User> newUser(@PathVariable String username,@RequestBody User newUser) {
-        if (manager.addUser(newUser)) {
+    public ResponseEntity<User> createUser(@PathVariable String username, @RequestBody User newUser) {
+        if (manager.createUser(newUser)) {
             return ResponseEntity.created(URI.create("/" + username)).body(newUser);
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(newUser);

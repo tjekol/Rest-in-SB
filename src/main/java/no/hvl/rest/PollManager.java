@@ -2,17 +2,19 @@ package no.hvl.rest;
 
 import no.hvl.rest.components.Poll;
 import no.hvl.rest.components.User;
+import no.hvl.rest.components.Vote;
+import no.hvl.rest.components.VoteOption;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.*;
 
 @Component
 public class PollManager {
-    private Map<String, User> users = new HashMap<>();
-    private ArrayList<Poll> polls = new ArrayList<>();
-
-    // Each poll is unique. User can have multiple polls.
-    private final Map<Poll, User> userPolls = HashMap.newHashMap(2);
+    private final Map<String, User> users = HashMap.newHashMap(2);
+    private final Map<UUID, Poll> polls = HashMap.newHashMap(2);
+    private final Map<UUID, User> userPolls = HashMap.newHashMap(2);
+    private final Map<String, Vote> pollVotes = HashMap.newHashMap(2);
 
     public PollManager() {
         /*
@@ -27,25 +29,51 @@ public class PollManager {
         return users.keySet();
     }
 
-    public Map<Poll, User> getUserPolls() {
-        return userPolls;
+    public Set<Poll> getPolls() {
+        return new HashSet<>(polls.values());
+    }
+
+    public Set<Vote> getVotes() {
+        return new HashSet<>(pollVotes.values());
+    }
+
+    private User getUserByUsername(String username) {
+        return users.get(username);
+    }
+
+    public Poll getPollByID(UUID id) {
+        return polls.get(id);
     }
 
     private boolean userExists(User user) {
         return users.containsKey(user.getUsername());
     }
 
-    public boolean addUser(User user) {
+    public boolean pollExists(Poll poll) {
+        return polls.containsKey(poll.getPollID());
+    }
+
+    public boolean createUser(User user) {
         if (userExists(user)) {
-            return false; // user already exists, not added
+            return false; // user already exists, not created
         } else {
             users.put(user.getUsername(), user);
-            return true; // user added
+            return true; // user is created
         }
     }
 
-    public ArrayList<Poll> getPolls() {
-        return polls;
+    public boolean createPoll(Poll poll, String username) {
+        User creator = getUserByUsername(username);
+        UUID pollID = poll.getPollID();
+
+        if (userExists(creator)) {
+            // all polls are unique, therefore no conflicts
+            polls.put(pollID, poll);
+            userPolls.put(pollID, creator);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

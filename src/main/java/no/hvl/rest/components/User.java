@@ -1,13 +1,17 @@
 package no.hvl.rest.components;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User implements Serializable {
+public class User {
     private String username; // unique, and used as id
     private String password;
     private String email;
 
-    public User(String username, String password, String email) {
+    public User(
+            @JsonProperty("username") String username,
+            @JsonProperty("password") String password,
+            @JsonProperty("email") String email
+    ) {
         this.username = username;
         this.password = password;
         this.email = email;
