@@ -3,10 +3,8 @@ package no.hvl.rest;
 import no.hvl.rest.components.Poll;
 import no.hvl.rest.components.User;
 import no.hvl.rest.components.Vote;
-import no.hvl.rest.components.VoteOption;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.*;
 
 @Component
@@ -31,7 +29,7 @@ public class PollManager {
         return new HashSet<>(pollVotes.values());
     }
 
-    private User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return users.get(username);
     }
 
@@ -39,7 +37,7 @@ public class PollManager {
         return polls.get(id);
     }
 
-    private boolean userExists(User user) {
+    public boolean userExists(User user) {
         return users.containsKey(user.getUsername());
     }
 
@@ -57,6 +55,10 @@ public class PollManager {
     }
 
     public boolean createPoll(Poll poll, String username) {
+        if (username.equals("") || username == null || poll == null) {
+            return false;
+        }
+
         User creator = getUserByUsername(username);
         UUID pollID = poll.getPollID();
 
@@ -85,6 +87,14 @@ public class PollManager {
         }
     }
 
+    private boolean userHasVoted(String username) {
+        for (Vote vote : pollVotes.values()) {
+            if (vote.getVoter().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean castVote(Vote vote) {
         Poll poll = getPollByID(vote.getPollID());
