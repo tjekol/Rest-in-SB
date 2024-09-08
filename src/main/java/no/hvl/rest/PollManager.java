@@ -17,12 +17,6 @@ public class PollManager {
     private final Map<String, Vote> pollVotes = HashMap.newHashMap(2);
 
     public PollManager() {
-        /*
-        Poll poll = new Poll(UUID.randomUUID(), user, "Cat or Dog", Instant.now(), Instant.now());
-        userPolls.put(user, poll);
-        users.put(user.getUsername(), user);
-        polls.add(poll);
-         */
     }
 
     public Set<String> getUsers() {
@@ -76,4 +70,43 @@ public class PollManager {
         }
     }
 
+    public boolean deletePoll(UUID pollID) {
+        if (pollExists(getPollByID(pollID))) {
+            polls.remove(pollID);
+            userPolls.remove(pollID);
+            for (Vote vote : pollVotes.values()) {
+                if (vote.getPollID().equals(pollID)) {
+                    pollVotes.remove(vote.getVoter());
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public boolean castVote(Vote vote) {
+        Poll poll = getPollByID(vote.getPollID());
+        if (pollExists(poll)) {
+            if (poll.isPublic()) {
+                String voter = vote.getVoter();
+                if (voter == null || voter.equals("")) {
+                    voter = UUID.randomUUID().toString();
+                    vote.setVoter(voter);
+                }
+                pollVotes.put(voter, vote);
+            } else {
+                User voter = getUserByUsername(vote.getVoter());
+                if (userExists(voter)) {
+                    pollVotes.put(voter.getUsername(), vote);
+                } else {
+                    return false;
+                }
+            }
+            return true; // vote was cast
+        } else {
+            return false; // poll/voter doesn't exist, no vote cast
+        }
+    }
 }

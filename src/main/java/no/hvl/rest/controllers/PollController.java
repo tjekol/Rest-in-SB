@@ -43,13 +43,13 @@ public class PollController {
     @PostMapping("/polls")
     public ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
         if (manager.createPoll(poll, poll.getPollCreator())) {
-            return ResponseEntity.ok().body(poll);
+            return ResponseEntity.created(URI.create("/" + poll.getPollID().toString())).body(poll);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    /*@PostMapping("/polls/{id}")
+    @PostMapping("/polls/{id}")
     public ResponseEntity<Vote> castVote(@PathVariable String id, @RequestBody Vote vote) {
         if (manager.castVote(vote)) {
             return ResponseEntity.created(URI.create("/" + id)).body(vote);
@@ -65,7 +65,7 @@ public class PollController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }*/
+    }
 
     @DeleteMapping("/polls/{id}")
     public ResponseEntity<HttpStatus> deletePoll(@PathVariable UUID id) {
