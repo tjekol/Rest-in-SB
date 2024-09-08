@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Vote {
@@ -44,5 +45,18 @@ public class Vote {
 
     public int getVoteOption() {
         return voteOption;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vote vote = (Vote) o;
+        return voteOption == vote.voteOption && Objects.equals(pollID, vote.pollID) && Objects.equals(username, vote.username) && Objects.equals(publishedAt, vote.publishedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pollID, username, voteOption, publishedAt);
     }
 }

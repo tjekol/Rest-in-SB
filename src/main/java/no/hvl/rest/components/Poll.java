@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -78,6 +78,19 @@ public class Poll  {
 
     public void addVoteOption(VoteOption vo) {
         voteOptions.add(vo);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Poll poll = (Poll) o;
+        return isPublic == poll.isPublic && Objects.equals(username, poll.username) && Objects.equals(question, poll.question) && Objects.equals(publishedAt, poll.publishedAt) && Objects.equals(validUntil, poll.validUntil) && Objects.equals(voteOptions, poll.voteOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, question, publishedAt, validUntil, isPublic, voteOptions);
     }
 }
 
