@@ -25,6 +25,16 @@ public class UserController {
         return ResponseEntity.ok(manager.getUsers());
     }
 
+    @GetMapping("/users/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        User user = manager.getUserByUsername(username);
+        if (manager.userExists(user)) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/users/{username}")
     public ResponseEntity<User> createUser(@PathVariable String username, @RequestBody User newUser) {
         if (manager.createUser(newUser)) {

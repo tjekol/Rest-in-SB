@@ -2,15 +2,12 @@ package no.hvl.rest.controllers;
 
 import no.hvl.rest.PollManager;
 import no.hvl.rest.components.Poll;
-import no.hvl.rest.components.User;
 import no.hvl.rest.components.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
-import java.lang.annotation.Repeatable;
 import java.net.URI;
 import java.util.Set;
 import java.util.UUID;
@@ -43,7 +40,7 @@ public class PollController {
     @PostMapping("/polls")
     public ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
         if (manager.createPoll(poll, poll.getPollCreator())) {
-            return ResponseEntity.created(URI.create("/" + poll.getPollID().toString())).body(poll);
+            return ResponseEntity.created(URI.create("/" + poll.getPollID())).body(poll);
         } else {
             return ResponseEntity.notFound().build();
         }
