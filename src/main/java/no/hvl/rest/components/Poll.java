@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class Poll  {
         this.publishedAt = Instant.now();
         this.validUntil = validUntil;
         this.isPublic = isPublic;
-        this.voteOptions = voteOptions;
+        this.voteOptions = voteOptions != null ? voteOptions : new HashSet<>();
     }
 
     public Poll() {};
@@ -39,9 +40,12 @@ public class Poll  {
         return id;
     }
 
-    // should not be able to change user creator
     public String getPollCreator() {
         return username;
+    }
+
+    public void setPollCreator(String username) {
+        this.username = username;
     }
 
     public String getQuestion() {
@@ -72,6 +76,10 @@ public class Poll  {
         return isPublic;
     }
 
+    public void setPublicity(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
     public Set<VoteOption> getVoteOptions() {
         return voteOptions;
     }
@@ -85,7 +93,7 @@ public class Poll  {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Poll poll = (Poll) o;
-        return isPublic == poll.isPublic && Objects.equals(username, poll.username) && Objects.equals(question, poll.question) && Objects.equals(publishedAt, poll.publishedAt) && Objects.equals(validUntil, poll.validUntil) && Objects.equals(voteOptions, poll.voteOptions);
+        return isPublic == poll.isPublic && Objects.equals(id, poll.id) && Objects.equals(username, poll.username) && Objects.equals(question, poll.question) && Objects.equals(publishedAt, poll.publishedAt) && Objects.equals(validUntil, poll.validUntil) && Objects.equals(voteOptions, poll.voteOptions);
     }
 
     @Override
