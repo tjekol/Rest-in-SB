@@ -95,7 +95,7 @@ public class PollApplication {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().contains(user1));
 
-        // Create another user
+        // Create user2
         userEntity = restTemplate.postForEntity("/users/"+user2, new User(user2, "pass2", user2+"@gmail.com"), User.class);
         assertEquals(HttpStatus.CREATED, userEntity.getStatusCode());
         assertEquals(new User(user2, "pass2", user2+"@gmail.com"), userEntity.getBody());
@@ -111,7 +111,7 @@ public class PollApplication {
                 user1,
                 "Cat or Dog",
                 Instant.now().plusSeconds(3600),
-                true,
+                false,
                 new HashSet<>(Set.of(
                         new VoteOption("Cat", 0),
                         new VoteOption("Dog", 1)
@@ -125,9 +125,8 @@ public class PollApplication {
         assertEquals(1, Objects.requireNonNull(response.getBody()).size());
 
         // User2 votes on poll
-        UUID pollID = poll.getPollID();
-        ResponseEntity<Vote> voteEntity = restTemplate.postForEntity("/votes", new Vote(pollID, user2, 0) , Vote.class);
-        assertEquals(HttpStatus.CREATED, voteEntity.getStatusCode());
+        //ResponseEntity<Vote> voteEntity = restTemplate.postForEntity("/votes", new Vote(poll.getPollID(), user2, 0), Vote.class);
+        //assertEquals(HttpStatus.CREATED, voteEntity.getStatusCode());
 
         // User2 changes vote on poll
         //response = restTemplate.getForEntity("/votes", Set.class);

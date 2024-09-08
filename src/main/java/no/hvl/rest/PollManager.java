@@ -100,6 +100,9 @@ public class PollManager {
     }
 
     public boolean castVote(Vote vote) {
+        if (vote.getPollID() == null) {
+            return false;
+        }
         Poll poll = getPollByID(vote.getPollID());
         if (pollExists(poll)) {
             if (poll.isPublic()) {
@@ -109,6 +112,7 @@ public class PollManager {
                     vote.setVoter(voter);
                 }
                 pollVotes.put(voter, vote);
+                return true;
             } else {
                 User voter = getUserByUsername(vote.getVoter());
                 if (userExists(voter)) {
