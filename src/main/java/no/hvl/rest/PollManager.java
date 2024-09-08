@@ -42,6 +42,9 @@ public class PollManager {
     }
 
     public boolean pollExists(Poll poll) {
+        if (poll == null || poll.getPollID() == null) {
+            return false;
+        }
         return polls.containsKey(poll.getPollID());
     }
 
@@ -55,7 +58,7 @@ public class PollManager {
     }
 
     public boolean createPoll(Poll poll, String username) {
-        if (username.equals("") || username == null || poll == null) {
+        if (username.equals("") || username == null || poll == null || poll.getPollCreator() == null) {
             return false;
         }
 

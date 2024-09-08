@@ -32,6 +32,16 @@ Content-Type: application/json
 ### GET all users
 GET http://{{host}}/users
 
+> {%
+    client.test("User fetched successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Fetched one user", function() {
+        client.assert(response.body.length === 1, "Response is not the correct length");
+    });
+%}
+
 ### CREATE user2
 POST http://{{host}}/users/{{users.user2}}
 Content-Type: application/json
@@ -55,6 +65,16 @@ Content-Type: application/json
 
 ### GET all users
 GET http://{{host}}/users
+
+> {%
+    client.test("User fetched successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Fetched one user", function() {
+        client.assert(response.body.length === 2, "Response is not the correct length");
+    });
+%}
 
 ### CREATE user1 creates a poll with vote options.
 POST http://{{host}}/polls
@@ -96,6 +116,10 @@ GET http://{{host}}/polls
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
     });
+
+    client.test("Fetched one poll", function() {
+        client.assert(response.body.length === 1, "Response is not the correct length");
+    });
 %}
 
 ### GET specific poll by ID
@@ -108,7 +132,7 @@ GET http://{{host}}/polls/{{pollID}}
 %}
 
 ### USER2 votes on poll
-POST http://{{host}}/polls/{{pollID}}
+POST http://{{host}}/votes
 Content-Type: application/json
 
 {
@@ -130,10 +154,14 @@ GET http://{{host}}/votes
     client.test("Fetched votes successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
     });
+
+    client.test("Fetched only one vote", function() {
+        client.assert(response.body.length === 1, "Response is not the correct length")
+    });
 %}
 
 ### USER2 changes vote on the same poll
-PUT http://{{host}}/polls/{{pollID}}
+PUT http://{{host}}/votes/{{pollID}}/{{users.user2}}
 Content-Type: application/json
 
 {
@@ -143,7 +171,6 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("pollID", response.body.pollID);  // store pollID in a variable from body response parameter pollID
     client.test("User2 changed vote on poll successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
     });
@@ -155,6 +182,10 @@ GET http://{{host}}/votes
 > {%
     client.test("Fetched votes successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Fetched only one vote", function() {
+        client.assert(response.body.length === 1, "Response is not the correct length")
     });
 %}
 
