@@ -36,22 +36,14 @@ public class PollApplication {
 
     @BeforeEach
     public void setUp() {
-        user1 = "eple";
-        user2 = "ananas";
+        user1 = "apple";
+        user2 = "orange";
     }
 
     @Test
     public void testServer() throws Exception {
         ResponseEntity<String> enitity = restTemplate.getForEntity("/", String.class);
         assertEquals(HttpStatus.OK, enitity.getStatusCode());
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = "eple")
-    public void listUser(String username) throws Exception {
-        ResponseEntity<Set> response = restTemplate.getForEntity("/users", Set.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains(username));
     }
 
     @Test
@@ -63,24 +55,31 @@ public class PollApplication {
         userEntity = restTemplate.getForEntity("/users/"+user1, User.class);
         assertEquals(HttpStatus.OK, userEntity.getStatusCode());
         assertEquals(new User(user1, "pass1", user1+"@gmail.com"), userEntity.getBody());
-    }
 
-    @Test
-    public void createTwoUsers() throws Exception {
-        ResponseEntity<User> userEntity1 = restTemplate.postForEntity("/users/"+user1, new User(user1, "pass1", user1+"@gmail.com"), User.class);
-        ResponseEntity<User> userEntity2 = restTemplate.postForEntity("/users/"+user2, new User(user2, "pass2", user2+"@gmail.com"), User.class);
-        assertEquals(HttpStatus.CREATED, userEntity1.getStatusCode());
-        assertEquals(HttpStatus.CREATED, userEntity2.getStatusCode());
-
-        // List all users, contains both users
         ResponseEntity<Set> response = restTemplate.getForEntity("/users", Set.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().contains(user1));
+    }
+
+    @Test
+    public void createUser2() throws Exception {
+        ResponseEntity<User> userEntity = restTemplate.postForEntity("/users/"+user2, new User(user2, "pass2", user2+"@gmail.com"), User.class);
+        assertEquals(HttpStatus.CREATED, userEntity.getStatusCode());
+
+        userEntity = restTemplate.getForEntity("/users/"+user2, User.class);
+        assertEquals(HttpStatus.OK, userEntity.getStatusCode());
+        assertEquals(new User(user2, "pass2", user2+"@gmail.com"), userEntity.getBody());
+
+        ResponseEntity<Set> response = restTemplate.getForEntity("/users", Set.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().contains(user2));
     }
 
     @Test
     public void userPollFlow() throws Exception {
+        user1 = "cherry";
+        user2 = "pear";
+
         // Create user1
         ResponseEntity<User> userEntity = restTemplate.postForEntity("/users/"+user1, new User(user1, "pass1", user1+"@gmail.com"), User.class);
         assertEquals(HttpStatus.CREATED, userEntity.getStatusCode());
