@@ -11,6 +11,7 @@ import java.util.Set;
 
 @RestController
 //@RequestMapping("/votes")
+@CrossOrigin
 public class VoteController {
 
     private final PollManager manager;

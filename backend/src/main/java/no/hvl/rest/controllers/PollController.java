@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 //@RequestMapping("/polls")
+@CrossOrigin
 public class PollController {
 
     private final PollManager manager;
