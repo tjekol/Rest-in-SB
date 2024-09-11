@@ -13,9 +13,9 @@ public class WebServer {
         SpringApplication.run(WebServer.class, args);
     }
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String welcome() {
         return String.format("Welcome to my Poll App!");
     }
-
+    */
 }

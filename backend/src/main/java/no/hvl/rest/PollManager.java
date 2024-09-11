@@ -19,8 +19,8 @@ public class PollManager {
     public PollManager() {
     }
 
-    public Set<String> getUsers() {
-        return users.keySet();
+    public Set<User> getUsers() {
+        return new HashSet<>(users.values());
     }
 
     public Set<Poll> getPolls() {
