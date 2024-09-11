@@ -1,1 +1,2 @@
-rootProject.name = "expass1"
+rootProject.name = "rest-in-sb"
+include("backend")
