@@ -31,32 +31,25 @@ public class PollManager {
         return new HashSet<>(votes.values());
     }
 
+    // always check if user/poll exist before getting them
+    public boolean userExists(String username) {
+        return users.containsKey(username);
+    }
+
+    public boolean pollExists(UUID pollID) {
+        return polls.containsKey(pollID);
+    }
+
     public User getUserByUsername(String username) {
         return users.get(username);
     }
 
     public Poll getPollByID(UUID id) {
-        try {
-            return polls.get(id);
-        } catch (NullPointerException e) {
-            e.fillInStackTrace();
-            throw e;
-        }
-    }
-
-    public boolean userExists(User user) {
-        return users.containsKey(user.getUsername());
-    }
-
-    public boolean pollExists(Poll poll) {
-        if (poll == null || poll.getPollID() == null) {
-            return false;
-        }
-        return polls.containsKey(poll.getPollID());
+        return polls.get(id);
     }
 
     public boolean createUser(User user) {
-        if (userExists(user)) {
+        if (userExists(user.getUsername())) {
             return false; // user already exists, not created
         } else {
             users.put(user.getUsername(), user);
@@ -76,7 +69,7 @@ public class PollManager {
             return false;
         }
 
-        if (userExists(creator)) {
+        if (userExists(creator.getUsername())) {
             // all polls are unique, therefore no conflicts
             polls.put(pollID, poll);
             userPolls.put(pollID, creator);
@@ -88,7 +81,7 @@ public class PollManager {
     }
 
     public boolean deletePoll(UUID pollID) {
-        if (pollExists(getPollByID(pollID))) {
+        if (pollExists(pollID)) {
             polls.remove(pollID);
             userPolls.remove(pollID);
             pollVotes.remove(pollID);
@@ -104,14 +97,16 @@ public class PollManager {
         }
     }
 
- 
-
     public boolean castVote(Vote vote) {
         if (vote.getPollID() == null) {
             return false;
         }
 
         Poll poll = getPollByID(vote.getPollID());
+
+        if (poll == null) {
+            return false;
+        }
 
         if (poll.isPublic()) { // public poll
             String voter = vote.getVoter();
@@ -124,8 +119,6 @@ public class PollManager {
             pollVotes.get(vote.getPollID()).add(vote);
             return true;
         } else { // private poll
-            User voter = getUserByUsername(vote.getVoter());
-
             Set<Vote> pollVoteSet = pollVotes.get(vote.getPollID());
             if (pollVoteSet == null) {
                 pollVoteSet = new HashSet<>();
@@ -156,14 +149,12 @@ public class PollManager {
     }
 
     public boolean login(String username, String password) {
-        User user = getUserByUsername(username);
-        if (user == null) {
-            return false;
+        if (userExists(username)) {
+            User user = getUserByUsername(username);
+            if (user.getPassword().equals(password)) {
+                return true;
+            }
         }
-        if (user.getPassword().equals(password)) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 }

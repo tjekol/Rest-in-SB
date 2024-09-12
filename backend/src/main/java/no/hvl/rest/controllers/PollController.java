@@ -30,8 +30,8 @@ public class PollController {
 
     @GetMapping("/polls/{id}")
     public ResponseEntity<Poll> getPoll(@PathVariable UUID id) {
-        Poll poll = manager.getPollByID(id);
-        if (manager.pollExists(poll)) {
+        if (manager.pollExists(id)) {
+            Poll poll = manager.getPollByID(id);
             return ResponseEntity.ok().body(poll);
         } else {
             return ResponseEntity.notFound().build();

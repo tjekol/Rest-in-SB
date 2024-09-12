@@ -29,8 +29,8 @@ public class UserController {
 
     @GetMapping("/users/{username}")
     public ResponseEntity<User> getUser(@PathVariable String username) {
-        User user = manager.getUserByUsername(username);
-        if (manager.userExists(user)) {
+        if (manager.userExists(username)) {
+            User user = manager.getUserByUsername(username);
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();
