@@ -1,9 +1,10 @@
 <script>
     import user from "../store/user.js";
-    let pollID = "";
-    let username = "";
-    let vo = 0;
+    import vote from "../store/vote.js";
 
+    let pollID = "";
+    let username = $user.username;
+    let vo = null;
     let currentError = null;
 
     const result = fetch("http://localhost:8080/polls").then((response) => response.json())
@@ -14,7 +15,24 @@
     }
 
     const castVote = () => {
-        console.log("cast vote")
+        fetch("http://localhost:8080/votes", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({pollID: pollID, username: username, voteOption: vo})
+        })
+        .then((res) => {
+            if (res.status < 299) return res.json()
+            if (res.status > 299) currentError = "Something wrong with server response";
+        })
+        .then((data) => {
+            if (data) vote.set(data)
+        })
+        .catch((err) => {
+            currentError = err;
+            console.log("Error login in: ", err)
+        })
     }
 </script>
 
@@ -31,7 +49,11 @@
                 {#each poll.voteOptions.sort((a,b) => a.presentationOrder - b.presentationOrder) as voteOption}
                     <li>{voteOption.caption}
                         <div class="vote-details">
-                            <button on:click={castVote}>Vote</button>
+                            <button on:click={() => {
+                                pollID = poll.pollID;
+                                vo = voteOption.presentationOrder;
+                                castVote();
+                            }}>Vote</button>
                             <p>{voteOption.votes} Votes</p>
                         </div>
                     </li>
