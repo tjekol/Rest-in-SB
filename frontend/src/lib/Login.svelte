@@ -17,7 +17,7 @@
                 if (res.status > 299) currentError = "Something wrong with server response";
             })
             .then((data) => {
-                if (data) user.update(val => val = {...data})
+                if (data) user.set(data)
             })
             .catch((err) => {
                 currentError = err;
