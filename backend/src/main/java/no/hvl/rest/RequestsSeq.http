@@ -29,6 +29,24 @@ Content-Type: application/json
 
 %}
 
+### LOGIN user1
+POST http://{{host}}/login
+Content-Type: application/json
+
+{
+  "username": "{{users.user1}}",
+  "password": "pass1"
+}
+
+> {%
+    client.test("User logged in successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response content-type is json", function() {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+    });
+%}
 ### GET all users
 GET http://{{host}}/users
 

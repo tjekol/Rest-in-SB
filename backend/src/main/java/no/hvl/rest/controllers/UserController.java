@@ -2,6 +2,7 @@ package no.hvl.rest.controllers;
 
 import no.hvl.rest.PollManager;
 import no.hvl.rest.components.User;
+import no.hvl.rest.components.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,15 @@ public class UserController {
             return ResponseEntity.created(URI.create("/" + username)).body(newUser);
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(newUser);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserLogin> login(@RequestBody UserLogin user) {
+        if (manager.login(user.getUsername(), user.getPassword())) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

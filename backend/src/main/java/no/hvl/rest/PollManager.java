@@ -32,12 +32,7 @@ public class PollManager {
     }
 
     public User getUserByUsername(String username) {
-        try {
-            return users.get(username);
-        } catch (NullPointerException e) {
-            e.fillInStackTrace();
-            throw  e;
-        }
+        return users.get(username);
     }
 
     public Poll getPollByID(UUID id) {
@@ -70,12 +65,16 @@ public class PollManager {
     }
 
     public boolean createPoll(Poll poll, String username) {
-        if (username.equals("") || username == null || poll == null || poll.getPollCreator() == null) {
+        if (username.equals("") || username == null || poll == null) {
             return false;
         }
 
         User creator = getUserByUsername(username);
         UUID pollID = poll.getPollID();
+
+        if (creator == null) {
+            return false;
+        }
 
         if (userExists(creator)) {
             // all polls are unique, therefore no conflicts
@@ -153,6 +152,18 @@ public class PollManager {
         if (existingVote != null) {
             pollVoteSet.remove(existingVote); // remove old vote from the set
             votes.remove(existingVote.getVoteID()); // remove old vote from the map
+        }
+    }
+
+    public boolean login(String username, String password) {
+        User user = getUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        if (user.getPassword().equals(password)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
