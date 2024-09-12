@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class VoteOption {
-    @JsonIgnore private Set<Vote> votes;
+    private int votes;
     private String caption;
     private int presentationOrder;
 
@@ -16,23 +16,23 @@ public class VoteOption {
             @JsonProperty("caption") String caption,
             @JsonProperty("presentationOrder") int presentationOrder
     ) {
-        this.votes = new HashSet<>();
+        this.votes = 0;
         this.caption = caption;
         this.presentationOrder = presentationOrder;
     }
 
     public VoteOption() {};
 
-    public Set<Vote> getVotes() {
+    public int getVotes() {
         return votes;
     }
 
-    public void addVote(Vote vote) {
-        votes.add(vote);
+    public void addVote() {
+        votes ++;
     }
 
-    public void removeVote(Vote vote) {
-        votes.remove(vote);
+    public void removeVote() {
+        if (votes > 0) votes --;
     }
 
     public String getCaption() {

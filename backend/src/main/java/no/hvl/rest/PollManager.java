@@ -97,6 +97,14 @@ public class PollManager {
         }
     }
 
+    public boolean deleteAllPolls() {
+        polls.clear();
+        votes.clear();
+        userPolls.clear();
+        pollVotes.clear();
+        return true;
+    }
+
     public boolean castVote(Vote vote) {
         if (vote.getPollID() == null) {
             return false;
@@ -117,6 +125,8 @@ public class PollManager {
             votes.put(vote.getVoteID(), vote);
             pollVotes.putIfAbsent(vote.getPollID(), new HashSet<>());
             pollVotes.get(vote.getPollID()).add(vote);
+            poll.getVoteOption(vote.getVoteOption()).addVote();
+
             return true;
         } else { // private poll
             Set<Vote> pollVoteSet = pollVotes.get(vote.getPollID());
@@ -124,16 +134,17 @@ public class PollManager {
                 pollVoteSet = new HashSet<>();
                 pollVotes.put(vote.getPollID(), pollVoteSet);
             }
-            userHasVoted(vote, pollVoteSet);
+            userHasVoted(vote, pollVoteSet, poll);
 
             pollVoteSet.add(vote);
             votes.put(vote.getVoteID(), vote);
+            poll.getVoteOption(vote.getVoteOption()).addVote();
         }
         return true; // vote was cast or updated
     }
 
     // the user has already voted, remove the old vote and add the new one
-    private void userHasVoted(Vote vote, Set<Vote> pollVoteSet) {
+    private void userHasVoted(Vote vote, Set<Vote> pollVoteSet, Poll poll) {
         Vote existingVote = null;
         for (Vote pollVote : pollVoteSet) {
             if (pollVote.getVoter().equals(vote.getVoter())) {
@@ -145,6 +156,7 @@ public class PollManager {
         if (existingVote != null) {
             pollVoteSet.remove(existingVote); // remove old vote from the set
             votes.remove(existingVote.getVoteID()); // remove old vote from the map
+            poll.getVoteOption(existingVote.getVoteOption()).removeVote();
         }
     }
 

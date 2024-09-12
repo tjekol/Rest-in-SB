@@ -56,4 +56,13 @@ public class PollController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/polls")
+    public ResponseEntity<HttpStatus> deleteAllPolls() {
+        if (manager.deleteAllPolls()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
+    }
 }

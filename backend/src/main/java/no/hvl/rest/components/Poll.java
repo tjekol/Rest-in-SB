@@ -13,7 +13,7 @@ public class Poll  {
     @JsonIgnore private UUID id;
     private String username; // username to user who created poll
     private String question;
-    @JsonIgnore private Instant publishedAt;
+    private Instant publishedAt;
     private Instant validUntil;
     private boolean isPublic;
     private Set<VoteOption> voteOptions;
@@ -82,6 +82,15 @@ public class Poll  {
 
     public Set<VoteOption> getVoteOptions() {
         return voteOptions;
+    }
+
+    public VoteOption getVoteOption(int index) {
+        for (VoteOption voteOption : voteOptions) {
+            if (voteOption.getPresentationOrder() == index) {
+                return voteOption;
+            }
+        }
+        return null;
     }
 
     public void addVoteOption(VoteOption vo) {

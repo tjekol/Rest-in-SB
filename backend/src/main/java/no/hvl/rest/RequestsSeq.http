@@ -229,6 +229,15 @@ GET http://{{host}}/votes
     })
 %}
 
+### DELETE all polls
+DELETE http://{{host}}/polls
+
+> {%
+    client.test("Fetched votes successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204");
+    });
+%}
+
 ### Anonym user votes on the same poll
 POST http://{{host}}/polls/{{pollID}}
 Content-Type: application/json
