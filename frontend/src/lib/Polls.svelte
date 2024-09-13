@@ -23,7 +23,7 @@
 
             <p>Poll created: {convertToDate(poll.publishedAt)}</p>
             <p>Poll is valid until: {convertToDate(poll.validUntil)}</p>
-            <Vote pollID={poll.pollID} username={username}/>
+            <Vote pollID={poll.pollID}/>
         </div>
         {/each}
     {:catch error}
