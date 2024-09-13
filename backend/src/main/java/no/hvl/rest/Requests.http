@@ -8,7 +8,7 @@ GET http://{{host}}
 %}
 
 ### CREATE user1
-POST http://{{host}}/users/{{users.user1}}
+POST http://{{host}}/users
 Content-Type: application/json
 
 {
@@ -61,7 +61,7 @@ GET http://{{host}}/users
 %}
 
 ### CREATE user2
-POST http://{{host}}/users/{{users.user2}}
+POST http://{{host}}/users
 Content-Type: application/json
 
 {

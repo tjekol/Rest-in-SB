@@ -1,6 +1,6 @@
 <script>
   import user from "./store/user.js";
-  import Login from "./lib/Login.svelte";
+  import Login from "./lib/CreateUser.svelte";
   import Poll from "./lib/Polls.svelte";
   import CreatePoll from "./lib/CreatePoll.svelte";
 

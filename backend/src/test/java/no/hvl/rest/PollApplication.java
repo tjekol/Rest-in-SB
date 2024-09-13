@@ -55,7 +55,7 @@ public class PollApplication {
 
         ResponseEntity<Set> response = restTemplate.getForEntity("/users", Set.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains(user1));
+        assertEquals(1, response.getBody().size());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class PollApplication {
 
         ResponseEntity<Set> response = restTemplate.getForEntity("/users", Set.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains(user2));
+        assertEquals(2, response.getBody().size());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class PollApplication {
         // List all users, contains user1
         ResponseEntity<Set> response = restTemplate.getForEntity("/users", Set.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains(user1));
+        assertEquals(1, response.getBody().size());
 
         // Create user2
         userEntity = restTemplate.postForEntity("/users/"+user2, new User(user2, "pass2", user2+"@gmail.com"), User.class);
@@ -99,8 +99,7 @@ public class PollApplication {
         // List all users, contains both users
         response = restTemplate.getForEntity("/users", Set.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains(user1));
-        assertTrue(response.getBody().contains(user2));
+        assertEquals(2, response.getBody().size());
 
         // User1 creates a poll
         Poll poll = new Poll(

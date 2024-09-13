@@ -1,5 +1,5 @@
 ### CREATE user1
-POST http://{{host}}/users/{{users.user1}}
+POST http://{{host}}/users
 Content-Type: application/json
 
 {
@@ -40,7 +40,7 @@ Content-Type: application/json
 %}
 
 ### CREATE user2
-POST http://{{host}}/users/{{users.user2}}
+POST http://{{host}}/users
 Content-Type: application/json
 
 {

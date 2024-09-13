@@ -37,10 +37,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/users/{username}")
-    public ResponseEntity<User> createUser(@PathVariable String username, @RequestBody User newUser) {
+    @PostMapping("/users")
+    // TODO more based status response
+    public ResponseEntity<User> createUser(@RequestBody User newUser) {
         if (manager.createUser(newUser)) {
-            return ResponseEntity.created(URI.create("/" + username)).body(newUser);
+            return ResponseEntity.created(URI.create("/" + newUser.getUsername())).body(newUser);
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(newUser);
         }
