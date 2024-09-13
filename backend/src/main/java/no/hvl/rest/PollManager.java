@@ -3,6 +3,7 @@ package no.hvl.rest;
 import no.hvl.rest.components.Poll;
 import no.hvl.rest.components.User;
 import no.hvl.rest.components.Vote;
+import no.hvl.rest.components.VoteOption;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -29,6 +30,18 @@ public class PollManager {
 
     public Set<Vote> getVotes() {
         return new HashSet<>(votes.values());
+    }
+
+    public Set<VoteOption> getVoteOptions() {
+        Set<VoteOption> vos = new HashSet<>();
+        for (Poll poll : polls.values()) {
+            vos.addAll(poll.getVoteOptions());
+        }
+        return vos;
+    }
+
+    public Set<VoteOption> getVoteOptions(UUID pollID) {
+        return getPollByID(pollID).getVoteOptions();
     }
 
     // always check if user/poll exist before getting them
@@ -109,12 +122,11 @@ public class PollManager {
         if (vote.getPollID() == null) {
             return false;
         }
-
-        Poll poll = getPollByID(vote.getPollID());
-
-        if (poll == null) {
+        UUID votePollID = vote.getPollID();
+        if (!pollExists(votePollID)) {
             return false;
         }
+        Poll poll = getPollByID(votePollID);
 
         if (poll.isPublic()) { // public poll
             String voter = vote.getVoter();
@@ -123,27 +135,27 @@ public class PollManager {
                 vote.setVoter(voter);
             }
             votes.put(vote.getVoteID(), vote);
-            pollVotes.putIfAbsent(vote.getPollID(), new HashSet<>());
-            pollVotes.get(vote.getPollID()).add(vote);
+            pollVotes.get(votePollID).add(vote);
             poll.getVoteOption(vote.getVoteOption()).addVote();
 
             return true;
         } else { // private poll
-            Set<Vote> pollVoteSet = pollVotes.get(vote.getPollID());
+            Set<Vote> pollVoteSet = pollVotes.get(votePollID); // gets all votes from the same poll
             if (pollVoteSet == null) {
                 pollVoteSet = new HashSet<>();
-                pollVotes.put(vote.getPollID(), pollVoteSet);
+                pollVotes.put(votePollID, pollVoteSet);
             }
             userHasVoted(vote, pollVoteSet, poll);
 
-            pollVoteSet.add(vote);
             votes.put(vote.getVoteID(), vote);
+            pollVoteSet.add(vote);
+            pollVotes.put(votePollID, pollVoteSet);
             poll.getVoteOption(vote.getVoteOption()).addVote();
         }
         return true; // vote was cast or updated
     }
 
-    // the user has already voted, remove the old vote and add the new one
+    // the user has already voted, remove the old vote
     private void userHasVoted(Vote vote, Set<Vote> pollVoteSet, Poll poll) {
         Vote existingVote = null;
         for (Vote pollVote : pollVoteSet) {
@@ -153,9 +165,9 @@ public class PollManager {
             }
         }
 
-        if (existingVote != null) {
-            pollVoteSet.remove(existingVote); // remove old vote from the set
+        if (existingVote != null) { // user has voted before
             votes.remove(existingVote.getVoteID()); // remove old vote from the map
+            pollVoteSet.remove(existingVote); // remove old vote from the set
             poll.getVoteOption(existingVote.getVoteOption()).removeVote();
         }
     }

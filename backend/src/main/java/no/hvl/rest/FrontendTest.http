@@ -119,8 +119,26 @@ GET http://{{host}}/polls
     });
 %}
 
+### GET all voteops
+GET http://{{host}}/voteops
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
 ### GET specific poll by ID
 GET http://{{host}}/polls/{{pollID}}
+
+> {%
+    client.test("Fetched poll successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### GET specific voteops by pollID
+GET http://{{host}}/voteops/{{pollID}}
 
 > {%
     client.test("Fetched poll successfully", function () {
