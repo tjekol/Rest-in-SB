@@ -1,11 +1,19 @@
 <script>
     import user from "../store/user.js";
     import Vote from "./Vote.svelte";
+    import {onMount} from "svelte";
 
     let username = $user.username;
     let currentError = null;
 
-    const result = fetch("http://localhost:8080/polls").then((response) => response.json())
+    let result = fetch("http://localhost:8080/polls").then((response) => response.json());
+
+    /*onMount(() => {
+        const intervalId = setInterval(() => {
+            result = fetch("http://localhost:8080/polls").then((response) => response.json())
+        }, 5000);
+        return () => clearInterval(intervalId)
+    })*/
 
     const convertToDate = (timestamp) => {
         const date = new Date(timestamp);  // Convert string to Date object
@@ -17,10 +25,9 @@
     {#await result}
         its loading…
     {:then ready}
-        {#each ready as poll}
+        {#each ready.sort((a,b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) as poll}
         <div class="poll">
             <h3>{poll.question}</h3>
-
             <p>Poll created: {convertToDate(poll.publishedAt)}</p>
             <p>Poll is valid until: {convertToDate(poll.validUntil)}</p>
             <Vote pollID={poll.pollID}/>
