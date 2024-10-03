@@ -5,12 +5,12 @@ CRUD operations in MongoDB.
 
 ## Setup
 Validate package
-![setup](images/setup.png)
+![setup](images/ex5/setup.png)
 
 Connect to database
 * `brew services start mongodb-community@7.0`
 * `mongosh`
-![connect](images/start.png)
+![connect](images/ex5/start.png)
 
 ### Technical problems that you encountered during installation and use of MongoDB and how you resolved
 Had none.
@@ -18,21 +18,21 @@ Had none.
 ## Experiment 1, CRUD operations
 
 * Insert
-  * ![insert](images/insert.png)
+  * ![insert](images/ex5/insert.png)
 * Update
-  * ![update](images/update.png)
+  * ![update](images/ex5/update.png)
 * Query
-  * ![query](images/query.png)
+  * ![query](images/ex5/query.png)
 * Delete
-  * ![delete](images/delete.png)
+  * ![delete](images/ex5/delete.png)
 * Bulk write
-  * ![bulk-write](images/bulk-write.png)
+  * ![bulk-write](images/ex5/bulk-write.png)
 
 ## Experiment 2, Aggregation
 * Aggregation
-  * ![aggregation](images/aggregation.png)
+  * ![aggregation](images/ex5/aggregation.png)
 * Map-Reduce
-  * ![map-reduce](images/map-reduce.png)
+  * ![map-reduce](images/ex5/map-reduce.png)
 
 ### Reason about why your implemented Map-reduce operation in Experiment 2 is useful and interpret the collection obtained.
 The implementation of map-reduce is useful to avoid unnecessary duplicates or redundant data. The implementations makes every row unique and merges those who give information to the same thing. As a result, the data that is displayed is easier to understand.
