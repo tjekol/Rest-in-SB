@@ -2,7 +2,7 @@
 _**Thea Jenny E. Kolnes**_
 
 ## Technical problems that you encountered during the completion of the tutorial
-Struggled a bit with setting up docker and the rabbitQM imports. Solved it eventually after understanding how it was connected. In the end I only added the `    implementation("com.rabbitmq:amqp-client:5.22.0")
+Struggled a bit with setting up docker and the rabbitQM imports. Solved it eventually after understanding how it was connected. In the end I only added the `implementation("com.rabbitmq:amqp-client:5.22.0")
 ` in `build.gradle.kts` file, then rebuilt the gradle.
 
 ## A link to your code for experiments 1-4 above
@@ -20,7 +20,7 @@ Struggled a bit with setting up docker and the rabbitQM imports. Solved it event
 
 ### Experiment 3, Working Queues
 * Created [NewTask.java](rabbit/src/main/java/NewTask.java) and [Worker.java](rabbit/src/main/java/Worker.java)
-* Compiled both files`javac -cp amqp-client-5.16.0.jar NewTask.java Worker.java`
+* Compiled both files `javac -cp amqp-client-5.16.0.jar NewTask.java Worker.java`
 * Started two worker nodes (consumers) in two terminals `java -cp $CP Worker`
 * Ran multiple instances of the producer node
   ```shell
@@ -47,7 +47,7 @@ Added durability
 
 ### Experiment 4, Publish/Subscribe
 * Created [EmitLog.java](rabbit/src/main/java/EmitLog.java) and [ReceiveLogs.java](rabbit/src/main/java/ReceiveLogs.java)
-* Compiled both files`javac -cp amqp-client-5.16.0.jar EmitLog.java ReceiveLogs.java`
+* Compiled both files `javac -cp amqp-client-5.16.0.jar EmitLog.java ReceiveLogs.java`
 * Started `ReceiveLogs.java` that received output in file [logs_from_rabbit.log](rabbit/src/main/java/logs_from_rabbit.log)
 * Ran `EmitLog.java` with `java -cp $CP EmitLog`
 ![ex4](images/ex6/emitlog-receivelogs.png)
