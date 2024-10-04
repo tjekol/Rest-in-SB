@@ -12,6 +12,7 @@ Struggled a bit with setting up docker and the rabbitQM imports. Solved it event
 
 ### Experiment 2, Hello World
 * Created [Send.java](rabbit/src/main/java/Send.java) and [Recv.java](rabbit/src/main/java/Recv.java)
+* Compiled files `javac -cp amqp-client-5.16.0.jar Recv.java Send.java`
 * Created variable in terminal `$CP` from `export CP=.:amqp-client-5.16.0.jar:slf4j-api-1.7.36.jar:slf4j-simple-1.7.36.jar`
 * Ran `Recv` with `java -cp $CP Recv`
 * Then `Send` with `java -cp $CP Send`
