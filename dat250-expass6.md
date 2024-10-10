@@ -2,7 +2,7 @@
 _**Thea Jenny E. Kolnes**_
 
 ## Technical problems that you encountered during the completion of the tutorial
-Struggled a bit with setting up docker and the rabbitQM imports. Solved it eventually after understanding how it was connected. In the end I only added the `implementation("com.rabbitmq:amqp-client:5.22.0")
+Struggled a bit with setting up docker and the rabbitMQ imports. Solved it eventually after understanding how it was connected. In the end I only added the `implementation("com.rabbitmq:amqp-client:5.22.0")
 ` in `build.gradle.kts` file, then rebuilt the gradle.
 
 ## A link to your code for experiments 1-4 above
