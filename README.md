@@ -13,12 +13,21 @@ A smart voting app.
 
 Spring Boot Rest API. Uses [backend](backend) and [frontend](frontend). 
 
+### JPA tutorial
+* [Experiment 4](https://github.com/tjekol/dat250-jpa-tutorial/blob/master/dat250-expass4.md)
+* [Project](https://github.com/tjekol/dat250-jpa-tutorial)
+
 ### MongoDB
 * [Experiment 5](dat250-expass5.md)
 
-Everything in terminal.
+Use MongoDB to execute CRUD operations. Everything in terminal.
 
-### RabbitQM
+### RabbitMQ
 * [Experiment 6](dat250-expass6.md)
 
-Java project interacting with Docker for RabbitQM. Uses [rabbit](rabbit)
+Java project interacting with Docker for RabbitMQ. Uses [rabbit](rabbit)
+
+### Docker
+* [Experiment 7](dat250-expass7.md)
+
+Use docker instead of H2 DB in JPA project (ex4) and create a Dockerfile.
