@@ -25,8 +25,8 @@ _**Thea Jenny E. Kolnes**_
 * Was able to connect database
 ![connected](images/ex7/connected.png)
 * Got `schema.up.sql` and `schema.down.sql`
-* Runs the sql commands in the SQL-client to create tables.
-* Tests pass
+* Ran the sql commands in the SQL-client to create tables.
+* Tests passed
 ![working program](images/ex7/test-work.png)
 
 ### Building you own dockerized application
